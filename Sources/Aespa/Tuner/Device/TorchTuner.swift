@@ -18,6 +18,8 @@ struct TorchTuner: AespaDeviceTuning {
         }
 
         device.torchMode(torchMode)
-        try device.setTorchModeOn(level: level)
+        if torchMode != .off {
+            try device.setTorchModeOn(level: level)
+        }
     }
 }
