@@ -100,7 +100,7 @@ public struct InteractivePreview: View {
             ZStack {
                 preview
                     .gesture(changePositionGesture)
-//                    .gesture(tapToFocusGesture(geometry)) // Currently disabled
+                    .gesture(tapToFocusGesture(geometry))
                     .gesture(pinchZoomGesture)
                 
                 // Crosshair
@@ -110,7 +110,6 @@ public struct InteractivePreview: View {
                     .frame(width: 100, height: 100)
                     .position(focusingLocation)
                     .opacity(focusFrameOpacity)
-                    .animation(.spring(), value: focusFrameOpacity)
             }
         }
     }
@@ -192,13 +191,10 @@ private extension InteractivePreview {
             // 10^9 nano seconds = 1 second
             let second: UInt64 = 1_000_000_000
             
-            withAnimation { focusFrameOpacity = 1 }
+            withAnimation(.spring(duration: 0.05)) { focusFrameOpacity = 1 }
             
-            try await Task.sleep(nanoseconds: 2 * second)
-            withAnimation { focusFrameOpacity = 0.35 }
-            
-            try await Task.sleep(nanoseconds: 3 * second)
-            withAnimation { focusFrameOpacity = 0 }
+            try await Task.sleep(nanoseconds: 1 * second)
+            withAnimation(.spring()) { focusFrameOpacity = 0 }
         }
     }
 }
